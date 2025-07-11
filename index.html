@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌊 Latin Wave Community - Sistema de Leads</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: linear-gradient(135deg, #f2e6c9 0%, #efdcc4 100%);
+            color: #1e1e1e;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #b48a64 0%, #a67c52 100%);
+            color: #f2e6c9;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(78, 62, 47, 0.3);
+        }
+
+        .header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .setup-section {
+            background: #e74c3c;
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .setup-section h2 {
+            font-family: 'Cinzel', serif;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .url-display {
+            background: rgba(255,255,255,0.9);
+            color: #1e1e1e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
+        .main-section {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(78, 62, 47, 0.1);
+            margin-bottom: 30px;
+            border: 2px solid #b48a64;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #a67c52;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #b48a64;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #f9f4e8;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #a67c52;
+            background: white;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #a67c52, #b48a64);
+            color: #f2e6c9;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #4e3e2f, #a67c52);
+        }
+
+        .btn-config {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            max-width: 300px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .btn-config:hover {
+            background: white;
+            color: #e74c3c;
+        }
+
+        .notification {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .notification.success {
+            background: #a8e6cf;
+            color: #2d5016;
+            border: 2px solid #00b894;
+            display: block;
+        }
+
+        .notification.error {
+            background: #fab1a0;
+            color: #8b4513;
+            border: 2px solid #e17055;
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .user-section {
+            background: #efdcc4;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #b48a64;
+        }
+
+        .credentials {
+            background: #74b9ff;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .credentials h4 {
+            margin-bottom: 15px;
+            font-family: 'Cinzel', serif;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden { display: none; }
+        .show { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌊 Sistema de Leads Manuales</h1>
+            <p>Latin Wave Community - Versión Funcional</p>
+        </div>
+
+        <!-- SETUP -->
+        <div class="setup-section" id="setupSection">
+            <h2>🔧 Configuración Inicial</h2>
+            <p>Pega tu URL del Google Apps Script aquí:</p>
+            
+            <div class="form-group" style="margin: 20px 0;">
+                <input type="url" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/[ID]/exec" style="background: white; color: #1e1e1e;">
+            </div>
+            
+            <button onclick="saveScriptUrl()" class="btn-config">💾 CONFIGURAR SISTEMA</button>
+            
+            <div style="margin-top: 20px; font-size: 0.9rem; opacity: 0.9;">
+                💡 Solo necesitas hacer esto UNA VEZ
+            </div>
+        </div>
+
+        <!-- SISTEMA PRINCIPAL -->
+        <div class="main-section hidden" id="mainSection">
+            
+            <!-- URL CONFIGURADA -->
+            <div class="user-section">
+                <h4 style="color: #a67c52; margin-bottom: 10px;">✅ Sistema Configurado</h4>
+                <p>URL del Script:</p>
+                <div class="url-display" id="urlDisplay">No configurado</div>
+                <button onclick="showSetup()" style="padding: 8px 16px; background: #f39c12; color: white; border: none; border-radius: 4px; cursor: pointer;">🔧 Cambiar URL</button>
+            </div>
+
+            <!-- CREDENCIALES -->
+            <div class="credentials">
+                <h4>🔐 Credenciales de Acceso</h4>
+                <p><strong>Rafael:</strong> rafael / lwc2025rafael</p>
+                <p><strong>Nekane:</strong> nekane / lwc2025nekane</p>
+                <p><strong>Patricia:</strong> patricia / lwc2025patricia</p>
+                <p><strong>Carlos:</strong> carlos / lwc2025carlos</p>
+            </div>
+
+            <!-- LOGIN -->
+            <div id="loginSection">
+                <h3 style="color: #a67c52; margin-bottom: 20px; font-family: 'Cinzel', serif;">🔐 Iniciar Sesión</h3>
+                
+                <div class="notification" id="loginNotification"></div>
+                
+                <div class="form-group">
+                    <label for="username">Usuario:</label>
+                    <select id="username">
+                        <option value="">Seleccionar...</option>
+                        <option value="rafael">Rafael</option>
+                        <option value="nekane">Nekane</option>
+                        <option value="patricia">Patricia</option>
+                        <option value="carlos">Carlos</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" placeholder="Tu contraseña">
+                </div>
+                
+                <button onclick="doLogin()" class="btn">🚀 ENTRAR AL SISTEMA</button>
+            </div>
+
+            <!-- DASHBOARD USUARIO -->
+            <div id="userDashboard" class="hidden">
+                <div class="user-section">
+                    <h3 id="welcomeUser" style="color: #a67c52; font-family: 'Cinzel', serif;"></h3>
+                    <p>Tu espacio personal para agregar leads</p>
+                    <div style="margin-top: 15px;">
+                        <button onclick="showChangePassword()" style="padding: 10px 20px; background: #f39c12; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;">🔐 Cambiar Contraseña</button>
+                        <button onclick="logout()" style="padding: 10px 20px; background: #74b9ff; color: white; border: none; border-radius: 4px; cursor: pointer;">🚪 Cerrar Sesión</button>
+                    </div>
+                </div>
+
+                <h3 style="color: #a67c52; margin-bottom: 20px; font-family: 'Cinzel', serif;">➕ Agregar Nuevo Lead</h3>
+                
+                <div class="notification" id="leadNotification"></div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="leadName">Nombre Completo:</label>
+                        <input type="text" id="leadName" placeholder="María García" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="leadEmail">Email:</label>
+                        <input type="email" id="leadEmail" placeholder="maria@ejemplo.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="leadPhone">WhatsApp:</label>
+                        <input type="tel" id="leadPhone" placeholder="+52 555 123 4567">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="leadSource">Fuente:</label>
+                        <select id="leadSource" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="networking">Networking</option>
+                            <option value="referido">Referido</option>
+                            <option value="social">Redes Sociales</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="leadNotes">Notas:</label>
+                    <textarea id="leadNotes" placeholder="Contexto del lead..." rows="3"></textarea>
+                </div>
+                
+                <button onclick="addLead()" class="btn">📥 AGREGAR A MI LISTA</button>
+            </div>
+
+            <!-- CAMBIAR CONTRASEÑA -->
+            <div id="changePasswordSection" class="hidden">
+                <div class="user-section">
+                    <h3 style="color: #a67c52; font-family: 'Cinzel', serif;">🔐 Cambiar Mi Contraseña</h3>
+                    <p>Crea una contraseña personal que solo tú conozcas</p>
+                </div>
+
+                <div class="notification" id="passwordNotification"></div>
+                
+                <div class="form-group">
+                    <label for="currentPassword">Contraseña Actual:</label>
+                    <input type="password" id="currentPassword" placeholder="Tu contraseña actual" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="newPassword">Nueva Contraseña:</label>
+                    <input type="password" id="newPassword" placeholder="Mínimo 8 caracteres" required>
+                    <div id="passwordStrength" style="margin-top: 10px; font-size: 0.9rem;"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar Nueva Contraseña:</label>
+                    <input type="password" id="confirmPassword" placeholder="Repite la nueva contraseña" required>
+                </div>
+                
+                <button onclick="changePassword()" class="btn">🔒 CAMBIAR CONTRASEÑA</button>
+                <button onclick="showDashboard()" class="btn" style="background: #95a5a6; margin-top: 10px;">⬅️ Volver al Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let SCRIPT_URL = '';
+        let currentUser = null;
+
+        // Cargar URL guardada al iniciar
+        window.onload = function() {
+            const savedUrl = localStorage.getItem('lwc_script_url');
+            if (savedUrl) {
+                SCRIPT_URL = savedUrl;
+                document.getElementById('scriptUrlInput').value = savedUrl;
+                showMainSystem();
+            }
+        };
+
+        // Pre-configurar URL del sistema
+        SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxs9BNMIlKZ6TqcTyjn4zeTegUFyp9QVJO1MeZvKFHcyFQMskkJa21hvrOP_Uf56fKlEA/exec';
+        localStorage.setItem('lwc_script_url', SCRIPT_URL);
+
+        // Guardar URL del script
+        function saveScriptUrl() {
+            const urlInput = document.getElementById('scriptUrlInput');
+            const url = urlInput.value.trim();
+            
+            if (!url) {
+                alert('⚠️ Por favor ingresa la URL del Google Script');
+                return;
+            }
+            
+            if (!url.includes('script.google.com/macros')) {
+                alert('❌ URL inválida. Debe ser de Google Apps Script');
+                return;
+            }
+            
+            SCRIPT_URL = url;
+            localStorage.setItem('lwc_script_url', url);
+            showMainSystem();
+        }
+
+        // Mostrar sistema principal
+        function showMainSystem() {
+            document.getElementById('setupSection').classList.add('hidden');
+            document.getElementById('mainSection').classList.remove('hidden');
+            document.getElementById('urlDisplay').textContent = SCRIPT_URL;
+        }
+
+        // Mostrar setup nuevamente
+        function showSetup() {
+            document.getElementById('setupSection').classList.remove('hidden');
+            document.getElementById('mainSection').classList.add('hidden');
+        }
+
+        // Login
+        async function doLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                showNotification('loginNotification', '⚠️ Completa todos los campos', 'error');
+                return;
+            }
+            
+            if (!SCRIPT_URL) {
+                showNotification('loginNotification', '⚠️ Configura la URL del script primero', 'error');
+                return;
+            }
+            
+            showNotification('loginNotification', '🔄 Verificando credenciales...', 'success');
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'getUserStats',
+                        username: username,
+                        password: password
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentUser = { username, password, name: result.user || username };
+                    showUserDashboard();
+                } else {
+                    showNotification('loginNotification', `❌ ${result.message || 'Error de login'}`, 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error de login:', error);
+                showNotification('loginNotification', `❌ Error de conexión: ${error.message}`, 'error');
+            }
+        }
+
+        // Mostrar dashboard del usuario
+        function showUserDashboard() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('userDashboard').classList.remove('hidden');
+            document.getElementById('changePasswordSection').classList.add('hidden');
+            document.getElementById('welcomeUser').textContent = `¡Bienvenido, ${currentUser.name}!`;
+            
+            // Si usa contraseña default, mostrar mensaje
+            if (currentUser.password === `lwc2025${currentUser.username}`) {
+                showNotification('leadNotification', `🔒 Recomendación: Cambia tu contraseña por una personal para mayor seguridad`, 'success');
+            } else {
+                showNotification('leadNotification', `✅ Login exitoso - Ya puedes agregar leads`, 'success');
+            }
+        }
+
+        // Mostrar sección cambiar contraseña
+        function showChangePassword() {
+            document.getElementById('userDashboard').classList.add('hidden');
+            document.getElementById('changePasswordSection').classList.remove('hidden');
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        }
+
+        // Volver al dashboard
+        function showDashboard() {
+            document.getElementById('changePasswordSection').classList.add('hidden');
+            document.getElementById('userDashboard').classList.remove('hidden');
+        }
+
+        // Cambiar contraseña
+        async function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showNotification('passwordNotification', '⚠️ Completa todos los campos', 'error');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                showNotification('passwordNotification', '❌ Las contraseñas no coinciden', 'error');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                showNotification('passwordNotification', '❌ La contraseña debe tener mínimo 8 caracteres', 'error');
+                return;
+            }
+            
+            if (currentPassword !== currentUser.password) {
+                showNotification('passwordNotification', '❌ La contraseña actual es incorrecta', 'error');
+                return;
+            }
+            
+            showNotification('passwordNotification', '🔄 Cambiando contraseña...', 'success');
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'changePassword',
+                        username: currentUser.username,
+                        currentPassword: currentPassword,
+                        newPassword: newPassword
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentUser.password = newPassword;
+                    showNotification('passwordNotification', '✅ Contraseña cambiada exitosamente', 'success');
+                    
+                    setTimeout(() => {
+                        showDashboard();
+                    }, 2000);
+                } else {
+                    showNotification('passwordNotification', `❌ ${result.message}`, 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error cambiando contraseña:', error);
+                showNotification('passwordNotification', '❌ Error al cambiar contraseña', 'error');
+            }
+        }
+
+        // Verificar fortaleza de contraseña
+        document.getElementById('newPassword').addEventListener('input', function() {
+            const password = this.value;
+            const strengthElement = document.getElementById('passwordStrength');
+            
+            if (password.length === 0) {
+                strengthElement.textContent = '';
+                return;
+            }
+            
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            if (strength < 3) {
+                strengthElement.textContent = '🔴 Contraseña débil';
+                strengthElement.style.color = '#e74c3c';
+            } else if (strength < 4) {
+                strengthElement.textContent = '🟡 Contraseña media';
+                strengthElement.style.color = '#f39c12';
+            } else {
+                strengthElement.textContent = '🟢 Contraseña fuerte';
+                strengthElement.style.color = '#27ae60';
+            }
+        });
+
+        // Cerrar sesión
+        function logout() {
+            currentUser = null;
+            document.getElementById('userDashboard').classList.add('hidden');
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            clearLeadForm();
+        }
+
+        // Agregar lead
+        async function addLead() {
+            if (!currentUser) {
+                showNotification('leadNotification', '⚠️ Debes iniciar sesión primero', 'error');
+                return;
+            }
+            
+            const leadData = {
+                nombre: document.getElementById('leadName').value.trim(),
+                email: document.getElementById('leadEmail').value.trim(),
+                whatsapp: document.getElementById('leadPhone').value.trim(),
+                fuente: document.getElementById('leadSource').value,
+                notas: document.getElementById('leadNotes').value.trim()
+            };
+            
+            if (!leadData.nombre || !leadData.email || !leadData.fuente) {
+                showNotification('leadNotification', '⚠️ Completa los campos obligatorios', 'error');
+                return;
+            }
+            
+            showNotification('leadNotification', '📤 Agregando lead...', 'success');
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'addLead',
+                        username: currentUser.username,
+                        password: currentUser.password,
+                        leadData: leadData
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('leadNotification', `✅ Lead agregado exitosamente: ${result.leadId}`, 'success');
+                    clearLeadForm();
+                } else {
+                    showNotification('leadNotification', `❌ ${result.message}`, 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error agregando lead:', error);
+                showNotification('leadNotification', `❌ Error al agregar lead: ${error.message}`, 'error');
+            }
+        }
+
+        // Limpiar formulario de lead
+        function clearLeadForm() {
+            document.getElementById('leadName').value = '';
+            document.getElementById('leadEmail').value = '';
+            document.getElementById('leadPhone').value = '';
+            document.getElementById('leadSource').value = '';
+            document.getElementById('leadNotes').value = '';
+        }
+
+        // Mostrar notificación
+        function showNotification(elementId, message, type) {
+            const notification = document.getElementById(elementId);
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+
+        // Manejar Enter en campos de login
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                doLogin();
+            }
+        });
+    </script>
+</body>
+</html>
